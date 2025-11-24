@@ -3,6 +3,7 @@
 ## 1. EC2 인스턴스 준비
 
 ### EC2 인스턴스 생성
+
 1. AWS 콘솔에서 EC2 서비스 접속
 2. **Launch Instance** 클릭
 3. 설정:
@@ -16,6 +17,7 @@
    - **Storage**: 8GB 이상
 
 ### 키 페어 다운로드
+
 - `.pem` 파일을 안전한 곳에 저장
 - 권한 설정: `chmod 400 your-key.pem`
 
@@ -28,6 +30,7 @@ ssh -i your-key.pem ubuntu@your-ec2-public-ip
 ## 3. 서버 환경 설정
 
 ### Node.js 설치
+
 ```bash
 # Node.js 20.x 설치
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -39,6 +42,7 @@ npm -v
 ```
 
 ### MySQL 설치 및 설정
+
 ```bash
 # MySQL 설치
 sudo apt update
@@ -59,11 +63,13 @@ EXIT;
 ```
 
 ### PM2 설치 (프로세스 관리)
+
 ```bash
 sudo npm install -g pm2
 ```
 
 ### Git 설치
+
 ```bash
 sudo apt install git -y
 ```
@@ -71,6 +77,7 @@ sudo apt install git -y
 ## 4. 프로젝트 배포
 
 ### 코드 가져오기
+
 ```bash
 # 홈 디렉토리로 이동
 cd ~
@@ -83,6 +90,7 @@ git clone https://github.com/your-username/portfolio.git
 ```
 
 ### 프로젝트 설정
+
 ```bash
 cd portfolio
 
@@ -94,6 +102,7 @@ nano .env
 ```
 
 **.env 파일 내용:**
+
 ```
 DB_HOST=localhost
 DB_USER=db202245066
@@ -103,6 +112,7 @@ PORT=3000
 ```
 
 ### 데이터베이스 스키마 생성
+
 ```bash
 # MySQL에 스키마 파일 import
 mysql -u db202245066 -p portfolio_db < schema.sql
@@ -112,6 +122,7 @@ mysql -u db202245066 -p portfolio_db < seed.sql
 ```
 
 ### 필수 디렉토리 생성
+
 ```bash
 mkdir -p logs
 mkdir -p src/public/uploads
@@ -138,16 +149,19 @@ pm2 save
 ## 6. Nginx 설정 (선택사항 - 80번 포트 사용)
 
 ### Nginx 설치
+
 ```bash
 sudo apt install nginx -y
 ```
 
 ### Nginx 설정
+
 ```bash
 sudo nano /etc/nginx/sites-available/portfolio
 ```
 
 **설정 내용:**
+
 ```nginx
 server {
     listen 80;
@@ -167,6 +181,7 @@ server {
 ```
 
 ### Nginx 활성화
+
 ```bash
 # 심볼릭 링크 생성
 sudo ln -s /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/
@@ -205,6 +220,7 @@ sudo certbot --nginx -d your-domain.com
 ## 9. 유용한 명령어
 
 ### PM2 관리
+
 ```bash
 pm2 list                  # 실행 중인 앱 목록
 pm2 restart portfolio     # 앱 재시작
@@ -215,6 +231,7 @@ pm2 monit                 # 모니터링
 ```
 
 ### MySQL 관리
+
 ```bash
 # MySQL 접속
 mysql -u db202245066 -p
@@ -227,6 +244,7 @@ mysql -u db202245066 -p portfolio_db < backup.sql
 ```
 
 ### 서버 관리
+
 ```bash
 # 디스크 사용량 확인
 df -h
@@ -255,6 +273,7 @@ pm2 restart portfolio
 ## 11. 문제 해결
 
 ### 포트가 이미 사용 중인 경우
+
 ```bash
 # 포트 사용 프로세스 확인
 sudo lsof -i :3000
@@ -264,6 +283,7 @@ sudo kill -9 [PID]
 ```
 
 ### 데이터베이스 연결 오류
+
 ```bash
 # MySQL 상태 확인
 sudo systemctl status mysql
@@ -273,6 +293,7 @@ sudo systemctl restart mysql
 ```
 
 ### 파일 권한 오류
+
 ```bash
 # 프로젝트 디렉토리 권한 설정
 chmod -R 755 ~/portfolio
@@ -283,6 +304,7 @@ chmod -R 777 ~/portfolio/logs
 ## 12. 보안 권장사항
 
 1. **환경 변수 보호**: .env 파일 권한을 600으로 설정
+
    ```bash
    chmod 600 .env
    ```
@@ -292,6 +314,7 @@ chmod -R 777 ~/portfolio/logs
 3. **SSH 키**: 비밀번호 로그인 비활성화
 
 4. **정기 업데이트**: 시스템 패키지 정기적으로 업데이트
+
    ```bash
    sudo apt update && sudo apt upgrade -y
    ```
@@ -306,6 +329,7 @@ chmod -R 777 ~/portfolio/logs
 ## 도움말
 
 문제가 발생하면:
+
 1. PM2 로그 확인: `pm2 logs portfolio`
 2. Nginx 로그 확인: `sudo tail -f /var/log/nginx/error.log`
 3. MySQL 로그 확인: `sudo tail -f /var/log/mysql/error.log`
