@@ -9,7 +9,7 @@
   <body>
     <nav class="navbar">
       <div class="container">
-        <h1 class="logo">Portfolio</h1>
+        <a href="#" class="logo-link"><h1 class="logo">Portfolio</h1></a>
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
@@ -237,6 +237,35 @@
     </footer>
 
     <script>
+      // 부드러운 스크롤 네비게이션
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          const targetId = this.getAttribute('href');
+
+          // '#'만 있으면 맨 위로 이동
+          if (targetId === '#') {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+            return;
+          }
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            const targetPosition = targetElement.offsetTop - navbarHeight;
+
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+
       // 캐러셀 기능
       const track = document.querySelector(".carousel-track");
       const slides = Array.from(track.children);
