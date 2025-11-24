@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>개인 포트폴리오 - Modern SaaS Design</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <h1 class="logo">Portfolio</h1>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section id="hero" class="hero">
+      <div class="container">
+        <h1 class="hero-title">Growing Developer</h1>
+        <p class="hero-subtitle">
+          배우고 성장하며 더 나은 코드를 작성하는 개발자
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn">프로젝트 보기</a>
+          <a href="#contact" class="btn btn-secondary">문의하기</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-subtitle">배움을 즐기고 성장하는 개발자</p>
+        <div class="about-content">
+          <p class="about-text">
+            안녕하세요. 인하공업전문대학 202245066 진승현입니다. 다양한
+            프로젝트를 통해 실무 경험을 쌓아가고 있습니다. 새로운 기술을 배우고
+            적용하는 것을 즐기며, 끊임없이 성장하는 개발자가 되고자 합니다.
+          </p>
+          <div class="stats-grid">
+            <% aboutInfo.forEach(info => { %>
+            <div class="stat-card">
+              <div class="stat-number"><%= info.value %></div>
+              <div class="stat-label"><%= info.title %></div>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section bg-light">
+      <div class="container">
+        <h2 class="section-title">Tech Stack</h2>
+        <p class="section-subtitle">
+          다양한 기술 스택을 활용하여 최적의 솔루션을 제공합니다
+        </p>
+        <div class="skills-grid">
+          <% const categories = {}; skills.forEach(skill => { if
+          (!categories[skill.category]) { categories[skill.category] = []; }
+          categories[skill.category].push(skill); }); const categoryIcons = {
+          'Frontend': 'F', 'Backend': 'B', 'Database': 'D', 'DevOps': 'O',
+          'Tools': 'T' }; Object.keys(categories).forEach(category => { %>
+          <div class="skill-card">
+            <h3>
+              <span class="skill-icon"
+                ><%= categoryIcons[category] || category.charAt(0) %></span
+              >
+              <%= category %>
+            </h3>
+            <div class="skill-list">
+              <% categories[category].forEach(skill => { %>
+              <span class="skill-tag" title="<%= skill.level %>% 숙련도">
+                <%= skill.name %>
+                <span style="opacity: 0.7">(<%= skill.level %>%)</span>
+              </span>
+              <% }); %>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">
+          최근 진행한 주요 프로젝트들을 확인해보세요
+        </p>
+        <div class="carousel-container">
+          <button
+            class="carousel-btn carousel-btn-prev"
+            aria-label="이전 프로젝트"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="carousel-track-container">
+            <div class="carousel-track">
+              <% projects.forEach(project => { %>
+              <div class="carousel-slide">
+                <div class="project-card">
+                  <div class="project-image">
+                    <img
+                      src="<%= project.image_url %>"
+                      alt="<%= project.title %>"
+                      onerror="this.src='/images/placeholder.jpg'"
+                    />
+                  </div>
+                  <div class="project-content">
+                    <h3><%= project.title %></h3>
+                    <p><%= project.description %></p>
+                    <div class="project-tech"><%= project.technology %></div>
+                    <div class="project-links">
+                      <% if (project.github_url) { %>
+                      <a
+                        href="<%= project.github_url %>"
+                        target="_blank"
+                        class="btn-small"
+                        >GitHub</a
+                      >
+                      <% } %> <% if (project.demo_url) { %>
+                      <a
+                        href="<%= project.demo_url %>"
+                        target="_blank"
+                        class="btn-small"
+                        >Demo</a
+                      >
+                      <% } %>
+                      <a href="/project/<%= project.id %>" class="btn-small"
+                        >자세히 보기</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+          </div>
+          <button
+            class="carousel-btn carousel-btn-next"
+            aria-label="다음 프로젝트"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="carousel-indicators"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="section bg-light">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-subtitle">프로젝트 문의나 협업 제안을 환영합니다</p>
+        <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert-success">메시지가 성공적으로 전송되었습니다!</div>
+        <% } %>
+        <form action="/contact" method="POST" class="contact-form">
+          <div class="form-group">
+            <label for="name">이름</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="홍길동"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">이메일</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="example@email.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="subject">제목</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="프로젝트 문의"
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">메시지</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              placeholder="메시지를 입력해주세요..."
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn">메시지 보내기</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; 2025 Portfolio. All rights reserved. Built with Node.js &
+          Express
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // 캐러셀 기능
+      const track = document.querySelector(".carousel-track");
+      const slides = Array.from(track.children);
+      const nextButton = document.querySelector(".carousel-btn-next");
+      const prevButton = document.querySelector(".carousel-btn-prev");
+      const indicatorsContainer = document.querySelector(
+        ".carousel-indicators"
+      );
+
+      // 슬라이드가 없으면 종료
+      if (slides.length === 0) {
+        console.log("프로젝트가 없습니다.");
+      } else {
+        let currentIndex = 0;
+        let autoSlideInterval = null;
+        let isTransitioning = false;
+
+        // 인디케이터 생성
+        slides.forEach((_, index) => {
+          const indicator = document.createElement("button");
+          indicator.classList.add("carousel-indicator");
+          if (index === 0) indicator.classList.add("active");
+          indicator.setAttribute("aria-label", `프로젝트 ${index + 1}로 이동`);
+          indicator.addEventListener("click", () => {
+            if (!isTransitioning) {
+              goToSlide(index);
+              resetAutoSlide();
+            }
+          });
+          indicatorsContainer.appendChild(indicator);
+        });
+
+        const indicators = Array.from(indicatorsContainer.children);
+
+        // 특정 슬라이드로 이동
+        const goToSlide = (targetIndex) => {
+          if (isTransitioning) return;
+
+          isTransitioning = true;
+          const slideWidth = track.offsetWidth;
+          track.style.transform =
+            "translateX(-" + slideWidth * targetIndex + "px)";
+
+          indicators.forEach((indicator) =>
+            indicator.classList.remove("active")
+          );
+          indicators[targetIndex].classList.add("active");
+
+          currentIndex = targetIndex;
+
+          // transition 완료 후 플래그 해제 (0.5초 후)
+          setTimeout(() => {
+            isTransitioning = false;
+          }, 500);
+        };
+
+        // 다음 슬라이드
+        const nextSlide = () => {
+          if (!isTransitioning) {
+            const nextIndex = (currentIndex + 1) % slides.length;
+            goToSlide(nextIndex);
+          }
+        };
+
+        // 이전 슬라이드
+        const prevSlide = () => {
+          if (!isTransitioning) {
+            const prevIndex =
+              (currentIndex - 1 + slides.length) % slides.length;
+            goToSlide(prevIndex);
+          }
+        };
+
+        // 버튼 이벤트
+        nextButton.addEventListener("click", () => {
+          nextSlide();
+          resetAutoSlide();
+        });
+
+        prevButton.addEventListener("click", () => {
+          prevSlide();
+          resetAutoSlide();
+        });
+
+        // 자동 슬라이드 (5초마다)
+        const startAutoSlide = () => {
+          // 기존 interval이 있으면 먼저 제거
+          if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+          }
+          autoSlideInterval = setInterval(() => {
+            nextSlide();
+          }, 5000);
+        };
+
+        const resetAutoSlide = () => {
+          if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = null;
+          }
+          startAutoSlide();
+        };
+
+        // 초기 실행
+        setTimeout(() => {
+          startAutoSlide();
+        }, 100);
+
+        // 윈도우 리사이즈 시 위치 재계산
+        let resizeTimeout;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            const slideWidth = track.offsetWidth;
+            track.style.transition = "none";
+            track.style.transform =
+              "translateX(-" + slideWidth * currentIndex + "px)";
+            setTimeout(() => {
+              track.style.transition = "transform 0.5s ease-in-out";
+            }, 50);
+          }, 250);
+        });
+
+        // 마우스 호버 시 자동 슬라이드 일시정지
+        const carouselContainer = document.querySelector(".carousel-container");
+        carouselContainer.addEventListener("mouseenter", () => {
+          if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = null;
+          }
+        });
+
+        carouselContainer.addEventListener("mouseleave", () => {
+          startAutoSlide();
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - Portfolio Admin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Admin Panel</h1>
+            <ul class="nav-links">
+                <li><a href="/admin">대시보드</a></li>
+                <li><a href="/">사이트 보기</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="alert-success">작업이 성공적으로 완료되었습니다!</div>
+            <% } %>
+
+            <!-- 프로젝트 관리 -->
+            <div class="admin-header">
+                <h2 class="section-title" style="margin-bottom: 0; text-align: left;">프로젝트 관리</h2>
+                <a href="/admin/projects/new" class="btn">새 프로젝트 추가</a>
+            </div>
+
+            <div class="admin-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>제목</th>
+                            <th>기술</th>
+                            <th>생성일</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (projects.length === 0) { %>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">프로젝트가 없습니다.</td>
+                            </tr>
+                        <% } else { %>
+                            <% projects.forEach(project => { %>
+                                <tr>
+                                    <td><%= project.id %></td>
+                                    <td><%= project.title %></td>
+                                    <td><%= project.technology %></td>
+                                    <td><%= new Date(project.created_at).toLocaleDateString('ko-KR') %></td>
+                                    <td>
+                                        <div class="admin-actions">
+                                            <a href="/admin/projects/<%= project.id %>/edit" class="btn-small">수정</a>
+                                            <form action="/admin/projects/<%= project.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                <button type="submit" class="btn-small btn-danger">삭제</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- About 정보 관리 -->
+            <div class="admin-header" style="margin-top: 5rem;">
+                <h2 class="section-title" style="margin-bottom: 0; text-align: left;">About 정보 관리</h2>
+                <a href="/admin/about/edit" class="btn">About 정보 수정</a>
+            </div>
+
+            <div class="admin-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>순서</th>
+                            <th>제목</th>
+                            <th>값</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% aboutInfo.forEach(info => { %>
+                            <tr>
+                                <td><%= info.display_order %></td>
+                                <td><%= info.title %></td>
+                                <td><%= info.value %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 스킬 관리 -->
+            <div class="admin-header" style="margin-top: 5rem;">
+                <h2 class="section-title" style="margin-bottom: 0; text-align: left;">스킬 관리</h2>
+                <a href="/admin/skills/new" class="btn">새 스킬 추가</a>
+            </div>
+
+            <div class="admin-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>카테고리</th>
+                            <th>이름</th>
+                            <th>레벨</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (skills.length === 0) { %>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">스킬이 없습니다.</td>
+                            </tr>
+                        <% } else { %>
+                            <% skills.forEach(skill => { %>
+                                <tr>
+                                    <td><%= skill.id %></td>
+                                    <td><%= skill.category %></td>
+                                    <td><%= skill.name %></td>
+                                    <td><%= skill.level %>%</td>
+                                    <td>
+                                        <div class="admin-actions">
+                                            <a href="/admin/skills/<%= skill.id %>/edit" class="btn-small">수정</a>
+                                            <form action="/admin/skills/<%= skill.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                <button type="submit" class="btn-small btn-danger">삭제</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Portfolio Admin. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

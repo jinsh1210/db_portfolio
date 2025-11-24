@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= skill ? '스킬 수정' : '스킬 추가' %> - Portfolio Admin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Admin Panel</h1>
+            <ul class="nav-links">
+                <li><a href="/admin">대시보드</a></li>
+                <li><a href="/">사이트 보기</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title"><%= skill ? '스킬 수정' : '새 스킬 추가' %></h2>
+
+            <form action="<%= skill ? `/admin/skills/${skill.id}` : '/admin/skills' %>" method="POST" class="contact-form">
+                <div class="form-group">
+                    <label for="category">카테고리 *</label>
+                    <select id="category" name="category" required style="width: 100%; padding: 14px 16px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 1rem; font-family: inherit; background: var(--bg-tertiary); color: var(--text-primary);">
+                        <option value="">카테고리를 선택하세요</option>
+                        <% categories.forEach(cat => { %>
+                            <option value="<%= cat %>" <%= (skill && skill.category === cat) ? 'selected' : '' %>><%= cat %></option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">스킬 이름 *</label>
+                    <input type="text" id="name" name="name" value="<%= skill ? skill.name : '' %>" placeholder="예: JavaScript, Node.js" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="level">레벨 (0-100)</label>
+                    <input type="number" id="level" name="level" min="0" max="100" value="<%= skill ? skill.level : 50 %>" placeholder="50">
+                    <small style="color: var(--text-muted); margin-top: 0.5rem; display: block;">숙련도를 0에서 100 사이의 숫자로 입력하세요.</small>
+                </div>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn"><%= skill ? '수정하기' : '추가하기' %></button>
+                    <a href="/admin" class="btn btn-secondary">취소</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Portfolio Admin. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

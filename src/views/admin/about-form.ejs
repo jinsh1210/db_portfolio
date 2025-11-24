@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개발 경력 수정 - Portfolio Admin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Admin Panel</h1>
+            <ul class="nav-links">
+                <li><a href="/admin">대시보드</a></li>
+                <li><a href="/">사이트 보기</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">개발 경력 설정</h2>
+            <p class="section-subtitle">개발을 시작한 연도를 입력하면 자동으로 경력이 계산됩니다</p>
+
+            <%
+            // years_experience 항목만 찾기
+            const yearInfo = aboutInfo.find(info => info.section_key === 'years_experience');
+            %>
+
+            <form action="/admin/about/update" method="POST" class="contact-form">
+                <div style="background: var(--bg-card); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-light);">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;">
+                            <%= new Date().getFullYear() - parseInt(yearInfo.value) %>년+
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 1.125rem;">
+                            현재 표시되는 개발 경력
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_year" style="font-size: 1.125rem; font-weight: 600;">개발 시작 연도</label>
+                        <input
+                            type="number"
+                            id="start_year"
+                            name="start_year"
+                            value="<%= yearInfo.value %>"
+                            placeholder="예: 2022"
+                            min="1900"
+                            max="<%= new Date().getFullYear() %>"
+                            required
+                            style="font-size: 1.25rem; text-align: center; font-weight: 600;"
+                        >
+                        <small style="color: var(--text-muted); margin-top: 0.75rem; display: block; text-align: center;">
+                            입력한 연도부터 현재까지의 기간이 자동으로 계산됩니다
+                        </small>
+                    </div>
+
+                    <div style="background: var(--bg-tertiary); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 1px solid var(--border-color);">
+                        <h4 style="color: var(--primary); margin-bottom: 1rem; font-size: 1rem;">📊 현재 통계 정보</h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                            <% aboutInfo.forEach(info => { %>
+                                <div style="text-align: center;">
+                                    <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.25rem;"><%= info.title %></div>
+                                    <div style="color: var(--text-primary); font-weight: 700; font-size: 1.25rem;">
+                                        <% if (info.section_key === 'completed_projects') { %>
+                                            자동
+                                        <% } else if (info.section_key === 'years_experience') { %>
+                                            <%= new Date().getFullYear() - parseInt(info.value) %>년+
+                                        <% } else if (info.section_key === 'tech_stack') { %>
+                                            자동
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                        <small style="color: var(--text-muted); display: block; text-align: center; margin-top: 1rem;">
+                            ⚡ "자동" 항목은 프로젝트/스킬 추가 시 자동으로 업데이트됩니다
+                        </small>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem; justify-content: center;">
+                    <button type="submit" class="btn">저장하기</button>
+                    <a href="/admin" class="btn btn-secondary">취소</a>
+                </div>
+            </form>
+
+            <div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-light);">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">💡 계산 방식</h3>
+                <div style="color: var(--text-secondary); line-height: 1.8;">
+                    <p style="margin-bottom: 1rem;">
+                        <strong style="color: var(--primary);">예시:</strong> 2022년에 입력하면
+                    </p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>2025년: <strong><%= 2025 - 2022 %>년+</strong> 표시</li>
+                        <li>2026년: <strong><%= 2026 - 2022 %>년+</strong> 표시 (자동 업데이트)</li>
+                        <li>2027년: <strong><%= 2027 - 2022 %>년+</strong> 표시 (자동 업데이트)</li>
+                    </ul>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">
+                        * 연도가 바뀌면 자동으로 경력이 업데이트되므로 한 번만 설정하면 됩니다
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Portfolio Admin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 실시간 미리보기
+        const yearInput = document.getElementById('start_year');
+        const currentYear = new Date().getFullYear();
+
+        yearInput.addEventListener('input', function() {
+            const startYear = parseInt(this.value);
+            if (!isNaN(startYear) && startYear > 0) {
+                const years = currentYear - startYear;
+                // 여기에 실시간 업데이트 로직 추가 가능
+            }
+        });
+    </script>
+</body>
+</html>
