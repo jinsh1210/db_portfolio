@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>개인 포트폴리오 - Modern SaaS Design</title>
+    <title>개인 포트폴리오</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
@@ -238,29 +238,29 @@
 
     <script>
       // 부드러운 스크롤 네비게이션
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
           e.preventDefault();
 
-          const targetId = this.getAttribute('href');
+          const targetId = this.getAttribute("href");
 
           // '#'만 있으면 맨 위로 이동
-          if (targetId === '#') {
+          if (targetId === "#") {
             window.scrollTo({
               top: 0,
-              behavior: 'smooth'
+              behavior: "smooth",
             });
             return;
           }
 
           const targetElement = document.querySelector(targetId);
           if (targetElement) {
-            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            const navbarHeight = document.querySelector(".navbar").offsetHeight;
             const targetPosition = targetElement.offsetTop - navbarHeight;
 
             window.scrollTo({
               top: targetPosition,
-              behavior: 'smooth'
+              behavior: "smooth",
             });
           }
         });
